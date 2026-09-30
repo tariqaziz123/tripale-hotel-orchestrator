@@ -4,12 +4,13 @@ import {
   saveHotelOffers,
   getHotelOffersByPrice,
 } from "./services/redisService";
+import healthRouter from "./routes/health";
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
-
+app.use("/health", healthRouter);
 app.get("/api/hotels", async (req, res) => {
   const { city, minPrice, maxPrice } = req.query;
 
