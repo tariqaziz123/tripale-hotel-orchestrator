@@ -7,11 +7,19 @@ const { fetchSupplierAHotels, fetchSupplierBHotels } =
     startToCloseTimeout: "10 seconds",
   });
 
-export async function hotelWorkflow(city: string): Promise<HotelOffer[]> {
+export async function hotelWorkflow(
+  city: string
+): Promise<HotelOffer[]> {
+  console.log(`Starting hotel workflow for ${city}`);
+
   const [supplierAHotels, supplierBHotels] = await Promise.all([
     fetchSupplierAHotels(city),
     fetchSupplierBHotels(city),
   ]);
+
+  console.log(
+    `Supplier results received: A=${supplierAHotels.length}, B=${supplierBHotels.length}`
+  );
 
   const hotelMap = new Map<string, HotelOffer>();
 
@@ -33,5 +41,11 @@ export async function hotelWorkflow(city: string): Promise<HotelOffer[]> {
     }
   }
 
-  return Array.from(hotelMap.values());
+  const result = Array.from(hotelMap.values());
+
+  console.log(
+    `Hotel workflow completed with ${result.length} unique hotels`
+  );
+
+  return result;
 }
