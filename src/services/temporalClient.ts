@@ -8,7 +8,7 @@ export async function getTemporalClient(): Promise<Client> {
   }
 
   const connection = await Connection.connect({
-    address: "localhost:7233",
+    address: process.env.TEMPORAL_ADDRESS || "localhost:7233",
   });
 
   client = new Client({
