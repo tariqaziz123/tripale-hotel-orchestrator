@@ -1,5 +1,5 @@
 import express from "express";
-import { Connection, Client } from "@temporalio/client";
+import { getTemporalClient } from "./services/temporalClient";
 
 const app = express();
 const PORT = 3000;
@@ -16,13 +16,7 @@ app.get("/api/hotels", async (req, res) => {
   }
 
   try {
-    const connection = await Connection.connect({
-      address: "localhost:7233",
-    });
-
-    const client = new Client({
-      connection,
-    });
+    const client = await getTemporalClient();
 
     const workflowId = `hotel-search-${city}-${Date.now()}`;
 
