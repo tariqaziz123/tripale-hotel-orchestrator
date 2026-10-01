@@ -1,26 +1,48 @@
-import { getSupplierAHotels } from "../suppliers/supplierA";
-import { getSupplierBHotels } from "../suppliers/supplierB";
 import { SupplierHotel } from "../types/hotel";
+
+const supplierAUrl =
+  process.env.SUPPLIER_A_URL || "http://localhost:3000/supplierA/hotels";
+
+const supplierBUrl =
+  process.env.SUPPLIER_B_URL || "http://localhost:3000/supplierB/hotels";
+
+async function fetchSupplierHotels(
+  url: string,
+  city: string,
+  supplierName: string
+): Promise<SupplierHotel[]> {
+  const response = await fetch(
+    `${url}?city=${encodeURIComponent(city)}`
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `${supplierName} returned HTTP ${response.status}`
+    );
+  }
+
+  return response.json() as Promise<SupplierHotel[]>;
+}
 
 export async function fetchSupplierAHotels(
   city: string
 ): Promise<SupplierHotel[]> {
-  try {
-    console.log(`[Supplier A] Fetching hotels for ${city}`);
+  console.log(`[Supplier A] Fetching hotels for city: ${city}`);
 
-    const hotels = await getSupplierAHotels(city);
+  try {
+    const hotels = await fetchSupplierHotels(
+      supplierAUrl,
+      city,
+      "Supplier A"
+    );
 
     console.log(
-      `[Supplier A] Returned ${hotels.length} hotels for ${city}`
+      `[Supplier A] Received ${hotels.length} hotels`
     );
 
     return hotels;
   } catch (error) {
-    console.error(
-      `[Supplier A] Failed for ${city}:`,
-      error
-    );
-
+    console.error("[Supplier A] Failed:", error);
     throw error;
   }
 }
@@ -28,22 +50,22 @@ export async function fetchSupplierAHotels(
 export async function fetchSupplierBHotels(
   city: string
 ): Promise<SupplierHotel[]> {
-  try {
-    console.log(`[Supplier B] Fetching hotels for ${city}`);
+  console.log(`[Supplier B] Fetching hotels for city: ${city}`);
 
-    const hotels = await getSupplierBHotels(city);
+  try {
+    const hotels = await fetchSupplierHotels(
+      supplierBUrl,
+      city,
+      "Supplier B"
+    );
 
     console.log(
-      `[Supplier B] Returned ${hotels.length} hotels for ${city}`
+      `[Supplier B] Received ${hotels.length} hotels`
     );
 
     return hotels;
   } catch (error) {
-    console.error(
-      `[Supplier B] Failed for ${city}:`,
-      error
-    );
-
+    console.error("[Supplier B] Failed:", error);
     throw error;
   }
 }

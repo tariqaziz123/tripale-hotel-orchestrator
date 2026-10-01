@@ -18,8 +18,12 @@ services:
     command: node dist/worker.js
     environment:
       TEMPORAL_ADDRESS: temporal:7233
+      SUPPLIER_A_URL: http://app:3000/supplierA/hotels
+      SUPPLIER_B_URL: http://app:3000/supplierB/hotels
     depends_on:
       temporal:
+        condition: service_started
+      app:
         condition: service_started
 
   redis:
