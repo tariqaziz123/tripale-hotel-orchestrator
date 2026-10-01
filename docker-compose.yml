@@ -8,6 +8,7 @@ services:
       TEMPORAL_ADDRESS: temporal:7233
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      SIMULATE_SUPPLIER_A_DOWN: "false"
     depends_on:
       - temporal
       - redis

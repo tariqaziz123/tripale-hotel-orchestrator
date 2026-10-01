@@ -13,6 +13,13 @@ router.get("/supplierA/hotels", async (req, res) => {
     });
   }
 
+  if (process.env.SIMULATE_SUPPLIER_A_DOWN === "true") {
+  console.error("Supplier A is simulated as unavailable");
+  return res.status(503).json({
+    error: "Supplier A is unavailable",
+  });
+}
+
   try {
     const hotels = await getSupplierAHotels(city);
     return res.json(hotels);

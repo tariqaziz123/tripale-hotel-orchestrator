@@ -17,10 +17,14 @@ router.get("/health", async (_req, res) => {
   }
 
   try {
-    await getSupplierBHotels("delhi");
-  } catch {
-    checks.supplierB = "unhealthy";
+  if (process.env.SIMULATE_SUPPLIER_A_DOWN === "true") {
+    throw new Error("Supplier A is simulated as unavailable");
   }
+
+  await getSupplierAHotels("delhi");
+} catch {
+  checks.supplierA = "unhealthy";
+}
 
   const healthy =
     checks.supplierA === "healthy" &&
