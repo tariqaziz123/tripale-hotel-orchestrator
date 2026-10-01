@@ -110,8 +110,8 @@ The application dependencies are installed inside the Docker image, so Node.js i
 Clone the repository:
 
 ```bash
-git clone <your-repository-url>
-cd <project-directory>
+git clone https://github.com/tariqaziz123/tripale-hotel-orchestrator.git
+cd tripale-hotel-orchestrator
 ```
 
 Start all services:
